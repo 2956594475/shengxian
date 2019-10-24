@@ -108,7 +108,7 @@
                     success:function (data) {
                         if (data.result == 1){
                             alert("登陆成功！")
-                            location.href="${pageContext.request.contextPath}/loginSuccess"
+                            location.href="${pageContext.request.contextPath}/index"
                         }else{
                             $('#user_name').next().html('用户名或密码错误！请重新登陆！')
                             $('#user_name').next().show();

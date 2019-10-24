@@ -1,11 +1,18 @@
 package com.qf.controller;
 
-import com.qf.pojo.User;
+
+import com.qf.pojo.GoodsType;
+import com.qf.pojo.IndexTypeVo;
+import com.qf.service.GoodsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: xbh
@@ -14,6 +21,10 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 public class View {
+
+    @Autowired
+    private GoodsService goodsService;
+
     /**
      * 去头部
      */
@@ -45,9 +56,22 @@ public class View {
     /**
      * 去主页
      */
-    @RequestMapping("/index")
-    public String index(){
-        return "index";
+    @RequestMapping({"/index", "/"})
+    public ModelAndView index(){
+        ModelAndView mv = new ModelAndView();
+        Map<String, List> map = new HashMap<>();
+        List<IndexTypeVo> typeVos = new ArrayList<>();
+        // 获取商品的种类信息
+        List<GoodsType> types = goodsService.findAllGoodsType();
+        for (GoodsType type : types) {
+            IndexTypeVo vo = new IndexTypeVo();
+            vo.setType(type);
+            typeVos.add(vo);
+        }
+        map.put("typeVos", typeVos);
+        mv.addObject("typeVos", typeVos);
+        mv.setViewName("index");
+        return mv;
     }
     /**
      * 登陆页面
@@ -71,12 +95,6 @@ public class View {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("title", "注册成功");
         mv.addObject("info", "恭喜你注册成功，接下来前往登陆界面");
-        return mv;
-    }
-
-    @RequestMapping("/loginSuccess")
-    public ModelAndView loginSuccess(){
-        ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 }
