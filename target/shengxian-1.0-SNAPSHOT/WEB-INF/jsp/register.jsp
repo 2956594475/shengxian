@@ -12,6 +12,9 @@
     <script src="${pageContext.request.contextPath}/js/register.js"></script>
     <script>
         $(function () {
+            $.get("${pageContext.request.contextPath}/footer", function (data) {
+                $("#footer").html(data);
+            })
             var error_name = false;
             var error_password = false;
             var error_check_password = false;
@@ -81,7 +84,7 @@
     <div class="r_con fr">
         <div class="reg_title clearfix">
             <h1>用户注册</h1>
-            <a href="login.html">登录</a>
+            <a href="<%=path%>/login">登录</a>
         </div>
         <div class="reg_form clearfix">
             <form id="registerForm">
@@ -122,18 +125,7 @@
 
 </div>
 
-<div class="footer no-mp">
-    <div class="foot_link">
-        <a href="#">关于我们</a>
-        <span>|</span>
-        <a href="#">联系我们</a>
-        <span>|</span>
-        <a href="#">招聘人才</a>
-        <span>|</span>
-        <a href="#">友情链接</a>
-    </div>
-    <p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
-    <p>电话：010-****888    京ICP备*******8号</p>
+<div class="footer no-mp" id="footer">
 </div>
 </body>
 </html>

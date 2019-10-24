@@ -50,4 +50,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User CheckUserInfoByUsernameOrEmail(String info) {
+        User byUsername = userDAO.findByUsername(info);
+        if (byUsername != null){
+            System.out.println("byUsername:" + byUsername);
+            return byUsername;
+        }
+        User byEmail = userDAO.findByEmail(info);
+        if (byEmail != null){
+            System.out.println("byEmail:" + byEmail);
+            return byEmail;
+        }
+        System.out.println("null:" + null);
+        return null;
+    }
+
 }

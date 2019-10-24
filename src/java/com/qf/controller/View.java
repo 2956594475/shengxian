@@ -15,6 +15,48 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class View {
     /**
+     * 去头部
+     */
+    @RequestMapping("/header")
+    public String header(){
+        return "header";
+    }
+    /**
+     * 去尾部
+     */
+    @RequestMapping("/footer")
+    public String footer(){
+        return "footer";
+    }
+    /**
+     * 去searchBar
+     */
+    @RequestMapping("/searchBar")
+    public String searchBar(){
+        return "searchBar";
+    }
+    /**
+     * 去404
+     */
+    @RequestMapping("/go404")
+    public String go404(){
+        return "404";
+    }
+    /**
+     * 去主页
+     */
+    @RequestMapping("/index")
+    public String index(){
+        return "index";
+    }
+    /**
+     * 登陆页面
+     */
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
+    }
+    /**
      * 注册页面
      */
     @RequestMapping("/register")
@@ -29,6 +71,12 @@ public class View {
         ModelAndView mv = new ModelAndView("login");
         mv.addObject("title", "注册成功");
         mv.addObject("info", "恭喜你注册成功，接下来前往登陆界面");
+        return mv;
+    }
+
+    @RequestMapping("/loginSuccess")
+    public ModelAndView loginSuccess(){
+        ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 }

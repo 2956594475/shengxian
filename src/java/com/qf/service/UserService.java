@@ -23,4 +23,8 @@ public interface UserService {
      * 检查邮箱是否已经占用
      */
     boolean CheckEmailIsUsed(String email);
+    /**
+     * 邮箱与用户名查询用户信息
+     */
+    User CheckUserInfoByUsernameOrEmail(String info);
 }

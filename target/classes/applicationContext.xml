@@ -104,4 +104,5 @@
     <!-- 支持 @Transactional 实现事务 -->
     <tx:annotation-driven transaction-manager="tx"/>
 
+    <import resource="classpath:shiro_applicationContext.xml"/>
 </beans>
