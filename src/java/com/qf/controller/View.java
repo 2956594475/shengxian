@@ -63,13 +63,15 @@ public class View {
         List<IndexTypeVo> typeVos = new ArrayList<>();
         // 获取商品的种类信息
         List<GoodsType> types = goodsService.findAllGoodsType();
+        // 获取首页轮播商品信息
+        map.put("goodsBanners", goodsService.findAllIndexBanner());
         for (GoodsType type : types) {
             IndexTypeVo vo = new IndexTypeVo();
             vo.setType(type);
             typeVos.add(vo);
         }
         map.put("typeVos", typeVos);
-        mv.addObject("typeVos", typeVos);
+        mv.addAllObjects(map);
         mv.setViewName("index");
         return mv;
     }

@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <% String path = request.getContextPath();%>
@@ -56,10 +56,13 @@
     </ul>
     <div class="slide fl">
         <ul class="slide_pics">
-            <li><img src="<%=path%>/images/slide.jpg" alt="幻灯片"></li>
-            <li><img src="<%=path%>/images/slide02.jpg" alt="幻灯片"></li>
-            <li><img src="<%=path%>/images/slide03.jpg" alt="幻灯片"></li>
-            <li><img src="<%=path%>/images/slide04.jpg" alt="幻灯片"></li>
+          <c:forEach items="${goodsBanners}" var="banner" varStatus="s">
+                <li>
+                    <a href="${pageContext.request.contextPath}/goods/${banner.sku_id}">
+                    <img src="${pageContext.request.contextPath}/${banner.image}" alt="幻灯片">
+                    </a>
+                </li>
+            </c:forEach>
         </ul>
         <div class="prev"></div>
         <div class="next"></div>
@@ -304,23 +307,6 @@
     </div>
 </div>
 
-<div class="footer" id="footer">
-</div>
-<script type="text/javascript" src="js/slideshow.js"></script>
-<script type="text/javascript">
-    BCSlideshow('focuspic');
-    var oFruit = document.getElementById('fruit_more');
-    var oShownum = document.getElementById('show_count');
-
-    var hasorder = localStorage.getItem('order_finish');
-
-    if (hasorder) {
-        oShownum.innerHTML = '2';
-    }
-
-    oFruit.onclick = function () {
-        window.location.href = 'list.html';
-    }
-</script>
+<div class="footer" id="footer"></div>
 </body>
 </html>

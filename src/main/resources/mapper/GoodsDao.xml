@@ -14,4 +14,27 @@
         select * from goods_type
     </select>
 
+    <select id="findAllIndexBanner" resultType="com.qf.pojo.IndexGoodsBanner">
+        select * from index_banner order by od
+    </select>
+
+    <select id="findGoodsSKUById" parameterType="int" resultType="com.qf.pojo.GoodsSKU">
+        select * from goods_sku where id=#{id}
+    </select>
+
+    <select id="findGoodsTypeById" parameterType="int" resultType="com.qf.pojo.GoodsType">
+        select * from goods_type where id=#{id}
+    </select>
+
+    <select id="findGoodsById" parameterType="int" resultType="com.qf.pojo.GoodsSPU">
+        select * from goods_spu where id=#{id}
+    </select>
+
+    <select id="findOrderGoodsBySkuId" parameterType="int" resultType="com.qf.pojo.OrderGoods">
+        select * from order_goods where sku_id=#{id}
+    </select>
+
+    <select id="findAllGoodsSKUByType" parameterType="int" resultType="com.qf.pojo.GoodsSKU">
+        select * from goods_sku where type_id=#{id} order by id desc
+    </select>
 </mapper>

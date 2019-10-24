@@ -16,7 +16,7 @@ public class GoodsSKU implements Serializable {
     private Integer id;
     private String name;        // 商品名称
     private String desc;        // 商品描述
-    private BigDecimal price;        // 商品价格
+    private BigDecimal price;   // 商品价格
     private String unite;       // 商品单位
     private String image;       // 商品图片
     private Integer stock;      // 商品库存
