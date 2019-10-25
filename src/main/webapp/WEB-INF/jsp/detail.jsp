@@ -10,48 +10,32 @@
     <script type="text/javascript" src="<%=path%>/js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="<%=path%>/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="<%=path%>/js/slide.js"></script>
+    <script type="text/javascript" src="<%=path%>/js/bigdecimal.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $.get("${pageContext.request.contextPath}/header", function (data) {
+                $("#header").html(data);
+            });
+            $.get("${pageContext.request.contextPath}/footer", function (data) {
+                $("#footer").html(data);
+            });
+            $.get("${pageContext.request.contextPath}/searchBar", function (data) {
+                $("#search").html(data);
+            });
+            cal_goods_amount();
+            $(document).click(function () {
+                $('.popup_con').fadeOut();
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="header_con">
-    <div class="header">
-        <div class="welcome fl login_btn">
-            欢迎<shiro:user><shiro:principal/></shiro:user>
-            来到天天生鲜!
-            <shiro:user>
-                <a href="${pageContext.request.contextPath}/user/logout">登出</a>
-            </shiro:user>
-        </div>
-        <div class="fr">
-            <div class="login_info fl">
-                欢迎您
-            </div>
-            <div class="login_btn fl">
-                <a href="login.html"><shiro:guest>登录</shiro:guest></a>
-                <span>|</span>
-                <a href="register.html">注册</a>
-            </div>
-            <div class="user_link fl">
-                <span>|</span>
-                <a href="user_center_info.html">用户中心</a>
-                <span>|</span>
-                <a href="cart.html">我的购物车</a>
-                <span>|</span>
-                <a href="user_center_order.html">我的订单</a>
-            </div>
-        </div>
-    </div>
+    <div class="header" id="header"></div>
 </div>
 
-<div class="search_bar clearfix">
-    <a href="index.html" class="logo fl"><img src="images/logo.png"></a>
-    <div class="search_con fl">
-        <input type="text" class="input_text fl" name="" placeholder="搜索商品">
-        <input type="button" class="input_btn fr" name="" value="搜索">
-    </div>
-    <div class="guest_cart fr">
-        <a href="cart.html" class="cart_name fl">我的购物车</a>
-        <div class="goods_count fl" id="show_count">1</div>
-    </div>
+<div class="search_bar clearfix" id="search">
 </div>
 
 <div class="navbar_con">
@@ -60,16 +44,14 @@
             <h1>全部商品分类</h1>
             <span></span>
             <ul class="subnav">
-                <li><a href="#" class="fruit">新鲜水果</a></li>
-                <li><a href="#" class="seafood">海鲜水产</a></li>
-                <li><a href="#" class="meet">猪牛羊肉</a></li>
-                <li><a href="#" class="egg">禽类蛋品</a></li>
-                <li><a href="#" class="vegetables">新鲜蔬菜</a></li>
-                <li><a href="#" class="ice">速冻食品</a></li>
+                <c:forEach items="${types}" var="type">
+                    <li><a href="${pageContext.request.contextPath}/goods/list/${type.id}"
+                           class="${type.logo}">${type.name}</a></li>
+                </c:forEach>
             </ul>
         </div>
         <ul class="navlist fl">
-            <li><a href="">首页</a></li>
+            <li><a href="${pageContext.request.contextPath}/">首页</a></li>
             <li class="interval">|</li>
             <li><a href="">手机生鲜</a></li>
             <li class="interval">|</li>
@@ -87,26 +69,28 @@
 </div>
 
 <div class="goods_detail_con clearfix">
-    <div class="goods_detail_pic fl"><img src="images/goods_detail.jpg"></div>
+    <div class="goods_detail_pic fl"><img src="${pageContext.request.contextPath}/${goods_sku.image}" width="320" height="320"></div>
     <div class="goods_detail_list fr">
-        <h3>大兴大棚草莓</h3>
-        <p>草莓浆果柔软多汁，味美爽口，适合速冻保鲜贮藏。草莓速冻后，可以保持原有的色、香、味，既便于贮藏，又便于外销。</p>
+        <h3>${goods_sku.name}</h3>
+        <p>${goods_sku.desc}</p>
         <div class="prize_bar">
-            <span class="show_pirze">¥<em>16.80</em></span>
-            <span class="show_unit">单  位：500g</span>
+            <span class="show_pirze">¥<em>${goods_sku.price}</em></span>
+            <span class="show_unit">单  位：${goods_sku.unite}</span>
+            <span class="show_unit">销  量：${goods_sku.sales}</span>
         </div>
         <div class="goods_num clearfix">
             <div class="num_name fl">数 量：</div>
             <div class="num_add fl">
                 <input type="text" class="num_show fl" value="1">
-                <a href="javascript:;" class="add fr">+</a>
-                <a href="javascript:;" class="minus fr">-</a>
+                <a href="javascript:void(0);" class="add fr" onclick="addOne()">+</a>
+                <a href="javascript:void(0);" class="minus fr" onclick="subOne()">-</a>
             </div>
+            <div class="num_name fl" style="margin-left: 120px">库 存：${goods_sku.stock}</div>
         </div>
         <div class="total">总价：<em>16.80元</em></div>
         <div class="operate_btn">
-            <a href="javascript:;" class="buy_btn">立即购买</a>
-            <a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
+            <a href="javascript:void(0);" class="buy_btn">立即购买</a>
+            <a href="javascript:void(0);" class="add_cart" id="add_cart">加入购物车</a>
         </div>
     </div>
 </div>
@@ -116,16 +100,13 @@
         <div class="new_goods">
             <h3>新品推荐</h3>
             <ul>
-                <li>
-                    <a href="#"><img src="images/goods/goods001.jpg"></a>
-                    <h4><a href="#">进口柠檬</a></h4>
-                    <div class="prize">￥3.90</div>
-                </li>
-                <li>
-                    <a href="#"><img src="images/goods/goods002.jpg"></a>
-                    <h4><a href="#">玫瑰香葡萄</a></h4>
-                    <div class="prize">￥16.80</div>
-                </li>
+                <c:forEach items="${new_sku}" var="news">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/goods/${news.id}"><img src="${pageContext.request.contextPath}/${news.image}"></a>
+                        <h4><a href="${pageContext.request.contextPath}/goods/${news.id}">${news.name}</a></h4>
+                        <div class="prize">￥${news.price}</div>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
@@ -139,48 +120,67 @@
         <div class="tab_content">
             <dl>
                 <dt>商品详情：</dt>
-                <dd>草莓采摘园位于北京大兴区 庞各庄镇四各庄村 ，每年1月-6月面向北京以及周围城市提供新鲜草莓采摘和精品礼盒装草莓，草莓品种多样丰富，个大香甜。所有草莓均严格按照有机标准培育，不使用任何化肥和农药。草莓在采摘期间免洗可以直接食用。欢迎喜欢草莓的市民前来采摘，也欢迎各大单位选购精品有机草莓礼盒，有机草莓礼盒是亲朋馈赠、福利送礼的最佳选择。 </dd>
+                <dd>${goods_spu.detail}</dd>
             </dl>
         </div>
 
     </div>
 </div>
 
-<div class="footer">
-    <div class="foot_link">
-        <a href="#">关于我们</a>
-        <span>|</span>
-        <a href="#">联系我们</a>
-        <span>|</span>
-        <a href="#">招聘人才</a>
-        <span>|</span>
-        <a href="#">友情链接</a>
-    </div>
-    <p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
-    <p>电话：010-****888    京ICP备*******8号</p>
+<div class="footer" id="footer">
 </div>
 <div class="add_jump"></div>
+<div class="popup_con">
+    <div class="popup">
+        <p id="pop_msg"></p>
+    </div>
+    <div class="mask"></div>
+</div>
 
-<script type="text/javascript" src="js/jquery-1.12.2.js"></script>
-<script type="text/javascript">
-    var $add_x = $('#add_cart').offset().top;
-    var $add_y = $('#add_cart').offset().left;
+<div class="add_jump" id="add_jump"></div>
+<script>
+    // 计算商品总价格
+    function cal_goods_amount() {
+        // 获取商品单价和数量
+        var price = $(".show_pirze").children('em').text();
+        var count = $(".num_show").val();
+        var price2 = new BigDecimal(price);
+        var count2 = new BigDecimal(count);
+        var amount = price2.multiply(count2);
+        var amount2 = parseFloat(amount.toString());
+        // 设置商品总价
+        $(".total").children("em").text(amount2.toFixed(2) + "元");
+    }
 
-    var $to_x = $('#show_count').offset().top;
-    var $to_y = $('#show_count').offset().left;
-
-    $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
-    $('#add_cart').click(function(){
-        $(".add_jump").stop().animate({
-                'left': $to_y+7,
-                'top': $to_x+7},
-            "fast", function() {
-                $(".add_jump").fadeOut('fast',function(){
-                    $('#show_count').html(2);
-                });
-
-            });
-    })
+    // 增加商品数量
+    function addOne(){
+        // 获取原有数目
+        var count = $(".num_show").val();
+        count = parseInt(count) + 1;
+        $(".num_show").val(count);
+        cal_goods_amount();
+    }
+    function subOne(){
+        // 获取原有数目
+        var count = $(".num_show").val();
+        count = parseInt(count) - 1;
+        if (count <= 0) {
+            count = 1;
+        }
+        $(".num_show").val(count);
+        cal_goods_amount();
+    }
+    // 手动输入商品数量
+    function inputSome(){
+        // 获取
+        var count = $(this).val();
+        // 校验
+        if (isNaN(count) || count.trim().length == 0 || parseInt(count) <= 0) {
+            count = 1;
+        }
+        $(this).val(parseInt(count));
+        cal_goods_amount();
+    }
 </script>
 </body>
 </html>

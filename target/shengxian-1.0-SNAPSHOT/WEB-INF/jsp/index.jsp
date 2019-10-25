@@ -98,7 +98,7 @@
                         <h4><a href="${pageContext.request.contextPath}/goods/${banner.sku_id}">${banner.sku.name}</a>
                         </h4>
                         <a href="${pageContext.request.contextPath}/goods/${banner.sku_id}">
-                            <img src="${banner.sku.image}"></a>
+                            <img src="${pageContext.request.contextPath}/${banner.sku.image}"></a>
                         <div class="prize">¥ ${banner.sku.price}</div>
                     </li>
                 </c:forEach>
