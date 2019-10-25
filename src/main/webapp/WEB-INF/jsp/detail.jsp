@@ -12,6 +12,19 @@
     <script type="text/javascript" src="<%=path%>/js/slide.js"></script>
     <script type="text/javascript" src="<%=path%>/js/bigdecimal.js"></script>
     <script type="text/javascript">
+        // 计算商品总价格
+        function cal_goods_amount() {
+            // 获取商品单价和数量
+            var price = $(".show_pirze").children('em').text();
+            var count = $(".num_show").val();
+            var price2 = new BigDecimal(price);
+            var count2 = new BigDecimal(count);
+            var amount = price2.multiply(count2);
+            var amount2 = parseFloat(amount.toString());
+            // 设置商品总价
+            $(".total").children("em").text(amount2.toFixed(2) + "元");
+        }
+
         $(function () {
 
             $.get("${pageContext.request.contextPath}/header", function (data) {
@@ -24,9 +37,96 @@
                 $("#search").html(data);
             });
             cal_goods_amount();
+
+            // 增加商品数量
+            $('.add').click(function () {
+                // 获取原有数目
+                var count = $(".num_show").val();
+                var stock = ${goods_sku.stock};
+                if (stock > count){
+                    count = parseInt(count) + 1;
+                }else{
+                    alert("库存不足！")
+                }
+                $(".num_show").val(count);
+                cal_goods_amount();
+            });
+            // 减少商品数量
+            $('.minus').click(function () {
+                // 获取原有数目
+                var count = $(".num_show").val();
+                count = parseInt(count) - 1;
+                if (count <= 0) {
+                    count = 1;
+                }
+                $(".num_show").val(count);
+                cal_goods_amount();
+            });
+            // 手动输入商品数量
+            $(".num_show").blur(function () {
+                // 获取
+                var count = $(this).val();
+                // 校验
+                if (isNaN(count) || count.trim().length == 0 || parseInt(count) <= 0) {
+                    count = 1;
+                }
+                var stock = ${goods_sku.stock};
+                if (stock < count){
+                    count = 1;
+                    alert("库存不足！");
+                }
+                $(this).val(parseInt(count));
+                cal_goods_amount();
+            });
+
+            $('#add_cart').click(function () {
+                // 获取商品数量
+                var count = $(".num_show").val();
+                // 发送ajax请求，访问/cart/add, 传递sku_id和count
+                var params = {"skuId":${goods_sku.id}, "count": count};
+                $.post("${pageContext.request.contextPath}/cart/add", params, function (data) {
+                    if (data.flag == true) {
+
+                        var $cart = $('#cart');
+                        var $count = $('#cart').next();
+                        var $btn = $('#add_cart');
+                        var $point = $('#add_jump');
+
+                        var $w01 = $btn.outerWidth();
+                        var $h01 = $btn.outerHeight();
+
+                        var $w02 = $cart.outerWidth();
+                        var $h02 = $cart.outerHeight();
+
+                        var oPos01 = $btn.offset();
+                        var oPos02 = $cart.offset();
+
+                        $point.css({
+                            'left': oPos01.left + parseInt($w01 / 2) - 8,
+                            'top': oPos01.top + parseInt($h01 / 2) - 8
+                        });
+                        $point.show();
+                        $point.stop().animate({
+                                'left': oPos02.left + parseInt($w02 / 2) - 8,
+                                'top': oPos02.top + parseInt($h01 / 2) - 8
+                            },
+                            500, function () {
+                                $point.hide();
+                                $count.html(data.obj);
+                            });
+                    } else {
+                        $("#pop_msg").text(data.message);
+                        $('.popup_con').fadeIn('fast');
+                        $(".num_show").val(1);
+                        cal_goods_amount();
+                    }
+                });
+            });
             $(document).click(function () {
                 $('.popup_con').fadeOut();
             });
+
+
         });
     </script>
 </head>
@@ -82,15 +182,15 @@
             <div class="num_name fl">数 量：</div>
             <div class="num_add fl">
                 <input type="text" class="num_show fl" value="1">
-                <a href="javascript:void(0);" class="add fr" onclick="addOne()">+</a>
-                <a href="javascript:void(0);" class="minus fr" onclick="subOne()">-</a>
+                <a href="javascript:void(0);" class="add fr">+</a>
+                <a href="javascript:void(0);" class="minus fr">-</a>
             </div>
             <div class="num_name fl" style="margin-left: 120px">库 存：${goods_sku.stock}</div>
         </div>
         <div class="total">总价：<em>16.80元</em></div>
         <div class="operate_btn">
             <a href="javascript:void(0);" class="buy_btn">立即购买</a>
-            <a href="javascript:void(0);" class="add_cart" id="add_cart">加入购物车</a>
+            <a href="javascript:void(0);" class="add_cart" id="add_cart" onclick="addCart()">加入购物车</a>
         </div>
     </div>
 </div>
@@ -138,49 +238,5 @@
 </div>
 
 <div class="add_jump" id="add_jump"></div>
-<script>
-    // 计算商品总价格
-    function cal_goods_amount() {
-        // 获取商品单价和数量
-        var price = $(".show_pirze").children('em').text();
-        var count = $(".num_show").val();
-        var price2 = new BigDecimal(price);
-        var count2 = new BigDecimal(count);
-        var amount = price2.multiply(count2);
-        var amount2 = parseFloat(amount.toString());
-        // 设置商品总价
-        $(".total").children("em").text(amount2.toFixed(2) + "元");
-    }
-
-    // 增加商品数量
-    function addOne(){
-        // 获取原有数目
-        var count = $(".num_show").val();
-        count = parseInt(count) + 1;
-        $(".num_show").val(count);
-        cal_goods_amount();
-    }
-    function subOne(){
-        // 获取原有数目
-        var count = $(".num_show").val();
-        count = parseInt(count) - 1;
-        if (count <= 0) {
-            count = 1;
-        }
-        $(".num_show").val(count);
-        cal_goods_amount();
-    }
-    // 手动输入商品数量
-    function inputSome(){
-        // 获取
-        var count = $(this).val();
-        // 校验
-        if (isNaN(count) || count.trim().length == 0 || parseInt(count) <= 0) {
-            count = 1;
-        }
-        $(this).val(parseInt(count));
-        cal_goods_amount();
-    }
-</script>
 </body>
 </html>

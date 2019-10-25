@@ -24,7 +24,6 @@ public class RedisService {
         Jedis jedis;
         try {
             jedis = new Jedis("192.168.74.128", 8000);
-            jedis.auth("JanvySun");
         } catch (Exception e) {
             throw new RuntimeException("无法连接到Redis数据库");
         }

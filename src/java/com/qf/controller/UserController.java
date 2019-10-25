@@ -1,7 +1,9 @@
 package com.qf.controller;
 
 import com.qf.pojo.User;
+import com.qf.service.RedisService;
 import com.qf.service.UserService;
+import com.qf.vo.CartVo;
 import com.qf.vo.UserLoginVO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +33,8 @@ public class UserController {
     Map<String, Integer> map = new HashMap<>();
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisService redisService;
 
     @PostMapping("/registerHandle")
     @ResponseBody
@@ -73,4 +79,23 @@ public class UserController {
         return mv;
     }
 
+
+    /**
+     * 用户购物车页面
+     */
+    @RequestMapping("/cart")
+    public ModelAndView cartView(HttpSession session) {
+        ModelAndView mv = new ModelAndView();
+        // 获取登录用户
+        Subject subject = SecurityUtils.getSubject();
+        User user = userService.CheckUserInfoByUsernameOrEmail((String)subject.getPrincipal());
+        // 获取用户购物车中的信息
+        List<CartVo> cartvos = redisService.getAllCartInfo(user.getId());
+        Integer count = redisService.getAllCartCount(user.getId());
+
+        mv.addObject("carts", cartvos);
+        mv.addObject("count", count);
+        mv.setViewName("cart");
+        return mv;
+    }
 }

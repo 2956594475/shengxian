@@ -5,6 +5,6 @@
     <input type="button" class="input_btn fr" name="" value="搜索">
 </div>
 <div class="guest_cart fr">
-    <a href="#" class="cart_name fl">我的购物车</a>
-    <div class="goods_count fl" id="show_count">1</div>
+    <a href="${pageContext.request.contextPath}/user/cart" class="cart_name fl" id="cart">我的购物车</a>
+    <div class="goods_count fl" id="show_count">${cart_count}</div>
 </div>
