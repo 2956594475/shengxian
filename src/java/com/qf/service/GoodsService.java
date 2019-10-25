@@ -38,4 +38,6 @@ public interface GoodsService {
      * 根据typeid查询sku新品内容
      */
     List<GoodsSKU> findNewGoodsSKUByType(Integer type_id);
+
+    List<IndexPromotionBanner> findAllPromotionBanner();
 }

@@ -65,6 +65,8 @@ public class View {
         List<GoodsType> types = goodsService.findAllGoodsType();
         // 获取首页轮播商品信息
         map.put("goodsBanners", goodsService.findAllIndexBanner());
+        // 获取首页促销活动信息
+        map.put("promotionBanners", goodsService.findAllPromotionBanner());
         for (GoodsType type : types) {
             IndexTypeVo vo = new IndexTypeVo();
             vo.setType(type);

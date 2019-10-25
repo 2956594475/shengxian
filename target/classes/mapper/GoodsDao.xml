@@ -37,4 +37,8 @@
     <select id="findAllGoodsSKUByType" parameterType="int" resultType="com.qf.pojo.GoodsSKU">
         select * from goods_sku where type_id=#{id} order by id desc
     </select>
+
+    <select id="findAllPromotionBanner" parameterType="int" resultType="com.qf.pojo.IndexPromotionBanner">
+       select * from index_promotion order by od
+    </select>
 </mapper>

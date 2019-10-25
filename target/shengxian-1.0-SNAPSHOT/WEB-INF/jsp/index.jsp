@@ -69,8 +69,9 @@
         <ul class="points"></ul>
     </div>
     <div class="adv fl">
-        <a href="#"><img src="<%=path%>/images/adv01.jpg"></a>
-        <a href="#"><img src="<%=path%>/images/adv02.jpg"></a>
+        <c:forEach items="${promotionBanners}" var="bn" varStatus="s">
+            <a href="${bn.url}"><img src="${bn.image}" alt="${bn.name}"></a>
+        </c:forEach>
     </div>
 </div>
 

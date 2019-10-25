@@ -64,4 +64,9 @@ public class GoodsServiceImpl implements GoodsService {
         }
         return new_sku;
     }
+
+    @Override
+    public List<IndexPromotionBanner> findAllPromotionBanner() {
+        return goodsDao.findAllPromotionBanner();
+    }
 }

@@ -37,4 +37,6 @@ public interface GoodsDao {
     List<OrderGoods> findOrderGoodsBySkuId(Integer id);
 
     List<GoodsSKU> findAllGoodsSKUByType(Integer type_id);
+
+    List<IndexPromotionBanner> findAllPromotionBanner();
 }
