@@ -69,4 +69,39 @@ public class GoodsServiceImpl implements GoodsService {
     public List<IndexPromotionBanner> findAllPromotionBanner() {
         return goodsDao.findAllPromotionBanner();
     }
+
+    @Override
+    public List<IndexTypeBanner> findImageIndexTypeByTypeId(Integer typeId) {
+        List<IndexTypeBanner> igb = goodsDao.findImageIndexTypeByTypeId(typeId);
+        for (IndexTypeBanner banner : igb) {
+            GoodsSKU sku = goodsDao.findGoodsSKUById(banner.getSku_id());
+            banner.setSku(sku);
+        }
+        return igb;
+    }
+
+    @Override
+    public List<IndexTypeBanner> findTitleIndexTypeByTypeId(Integer typeId) {
+        List<IndexTypeBanner> igb = goodsDao.findTitleIndexTypeByTypeId(typeId);
+        for (IndexTypeBanner banner : igb) {
+            GoodsSKU sku = goodsDao.findGoodsSKUById(banner.getSku_id());
+            banner.setSku(sku);
+        }
+        return igb;
+    }
+
+    @Override
+    public List<GoodsSKU> findGoodsSKUByTypeAndPriceSort(Integer id) {
+        return goodsDao.findAllGoodsSKUByTypeAndSortPrice(id);
+    }
+
+    @Override
+    public List<GoodsSKU> findGoodsSKUByTypeAndSalesSort(Integer id) {
+        return goodsDao.findAllGoodsSKUByTypeAndSortSales(id);
+    }
+
+    @Override
+    public List<GoodsSKU> findGoodsSKUByType(Integer id) {
+        return goodsDao.findGoodsSKUByType(id);
+    }
 }

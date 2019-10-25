@@ -65,4 +65,35 @@ public class GoodsController {
         mv.setViewName("detail");
         return mv;
     }
+
+
+    /**
+     * 商品列表页面
+     */
+    @RequestMapping("/goods/list/{ID}")
+    public ModelAndView goodsList(@PathVariable("ID") Integer id, Integer sort) {
+        ModelAndView mv = new ModelAndView();
+        // 获取种类信息
+        mv.addObject("types", goodsService.findAllGoodsType());
+        // 获取排序: 1(按价格排序) 2(按销量排序) 其他(默认按id排序)
+        int s = sort == null ? 0 : sort;
+        mv.addObject("type_id", id);
+        mv.addObject("sort", s);
+        List<GoodsSKU> skus;
+        if (s == 1) {
+            skus = goodsService.findGoodsSKUByTypeAndPriceSort(id);
+        } else if (s == 2) {
+            skus = goodsService.findGoodsSKUByTypeAndSalesSort(id);
+        } else {
+            skus = goodsService.findGoodsSKUByType(id);
+        }
+        mv.addObject("skus", skus);
+
+        // 获取新品信息
+        List<GoodsSKU> new_skus = goodsService.findNewGoodsSKUByType(id);
+        mv.addObject("new_sku", new_skus);
+
+        mv.setViewName("list");
+        return mv;
+    }
 }

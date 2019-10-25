@@ -2,7 +2,7 @@ package com.qf.controller;
 
 
 import com.qf.pojo.GoodsType;
-import com.qf.pojo.IndexTypeVo;
+import com.qf.vo.IndexTypeVo;
 import com.qf.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,6 +70,8 @@ public class View {
         for (GoodsType type : types) {
             IndexTypeVo vo = new IndexTypeVo();
             vo.setType(type);
+            vo.setImage_banners(goodsService.findImageIndexTypeByTypeId(type.getId()));
+            vo.setTitle_banners(goodsService.findTitleIndexTypeByTypeId(type.getId()));
             typeVos.add(vo);
         }
         map.put("typeVos", typeVos);

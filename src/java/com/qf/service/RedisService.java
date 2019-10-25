@@ -2,7 +2,7 @@ package com.qf.service;
 
 
 import com.qf.dao.GoodsDao;
-import com.qf.pojo.CartVo;
+import com.qf.vo.CartVo;
 import com.qf.pojo.GoodsSKU;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

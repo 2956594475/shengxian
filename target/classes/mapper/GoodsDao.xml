@@ -41,4 +41,24 @@
     <select id="findAllPromotionBanner" parameterType="int" resultType="com.qf.pojo.IndexPromotionBanner">
        select * from index_promotion order by od
     </select>
+
+    <select id="findImageIndexTypeByTypeId" parameterType="int" resultType="com.qf.pojo.IndexTypeBanner">
+       select * from index_type_goods where type_id=#{typeId} and display_type=1 order by od
+    </select>
+
+    <select id="findTitleIndexTypeByTypeId" parameterType="int" resultType="com.qf.pojo.IndexTypeBanner">
+       select * from index_type_goods where type_id=#{typeId} and display_type=0 order by od
+    </select>
+
+    <select id="findAllGoodsSKUByTypeAndSortPrice" parameterType="int" resultType="com.qf.pojo.GoodsSKU">
+       select * from goods_sku where type_id=#{id} order by price
+    </select>
+
+    <select id="findAllGoodsSKUByTypeAndSortSales" parameterType="int" resultType="com.qf.pojo.GoodsSKU">
+       select * from goods_sku where type_id=#{id} order by sales desc
+    </select>
+
+    <select id="findGoodsSKUByType" parameterType="int" resultType="com.qf.pojo.GoodsSKU">
+       select * from goods_sku where type_id=#{id} order by id
+    </select>
 </mapper>

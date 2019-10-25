@@ -1,5 +1,7 @@
-package com.qf.pojo;
+package com.qf.vo;
 
+import com.qf.pojo.GoodsType;
+import com.qf.pojo.IndexTypeBanner;
 import lombok.*;
 
 import java.util.List;

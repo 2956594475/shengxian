@@ -1,5 +1,6 @@
-package com.qf.pojo;
+package com.qf.vo;
 
+import com.qf.pojo.GoodsSKU;
 import lombok.Getter;
 import lombok.Setter;
 

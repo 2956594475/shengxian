@@ -35,8 +35,25 @@ public interface GoodsDao {
      * 根据skuid查询order_goods表内容
      */
     List<OrderGoods> findOrderGoodsBySkuId(Integer id);
-
+    /**
+     * 根据商品种类查询sku
+     */
     List<GoodsSKU> findAllGoodsSKUByType(Integer type_id);
-
+    /**
+     * 查询index_promotion(首页促销活动)中所有信息
+     */
     List<IndexPromotionBanner> findAllPromotionBanner();
+    /**
+     * 根据typeID查询表index_type_banner内容
+     * 并获取其对应sku的内容
+     */
+    List<IndexTypeBanner> findImageIndexTypeByTypeId(Integer typeId);
+
+    List<IndexTypeBanner> findTitleIndexTypeByTypeId(Integer typeId);
+
+    List<GoodsSKU> findAllGoodsSKUByTypeAndSortPrice(Integer id);
+
+    List<GoodsSKU> findAllGoodsSKUByTypeAndSortSales(Integer id);
+
+    List<GoodsSKU> findGoodsSKUByType(Integer id);
 }

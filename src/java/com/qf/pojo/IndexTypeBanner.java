@@ -16,4 +16,6 @@ public class IndexTypeBanner implements Serializable {
     private Integer od;             // 展示顺序
     private Integer sku_id;         // 商品SKU
     private Integer type_id;        // 商品类型
+
+    private GoodsSKU sku;
 }
